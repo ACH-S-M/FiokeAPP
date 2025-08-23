@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fioke/stateful/ClickedBtn.dart';
-import 'package:fioke/component/deskripsiLayout.dart';
+import 'package:fioke/view/component/ClickedBtn.dart';
+import 'package:fioke/view/component/deskripsiLayout.dart';
 class Detail extends StatelessWidget {
   final String nama;
   final String harga;

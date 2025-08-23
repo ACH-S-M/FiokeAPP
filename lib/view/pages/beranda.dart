@@ -1,7 +1,7 @@
-import 'package:fioke/component/bottomNav.dart';
+import 'package:fioke/view/component/bottomNav.dart';
 import 'package:flutter/material.dart';
-import 'package:fioke/card/cardproduk.dart';
-import 'package:fioke/data/dataproduk.dart';
+import 'package:fioke/view/component/cardproduk.dart';
+import 'package:fioke/models/dataproduk.dart';
 
 class FiokeMain extends StatelessWidget {
   final String namauser;
