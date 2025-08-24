@@ -16,15 +16,15 @@ class Bottomnav extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Home"))
-              );
+               Navigator.pushNamed(context, '/beranda');
             },
             icon: Icon(Icons.home_outlined,color: Colors.white,),
             iconSize: 32,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/kategori');
+            },
             icon: Icon(Icons.grid_view_outlined,color: Colors.white,),
             iconSize: 32,
           ),
