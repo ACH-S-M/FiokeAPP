@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fioke/view/pages/beranda.dart';
 
 class Bottomnav extends StatelessWidget {
   Bottomnav({super.key});
+
   @override
   Widget build(BuildContext context) {
    const int PrimaryColor = 0xFF1F4E78;
@@ -16,14 +18,14 @@ class Bottomnav extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-               Navigator.pushNamed(context, '/beranda');
+               Navigator.pushReplacementNamed(context, '/beranda');
             },
             icon: Icon(Icons.home_outlined,color: Colors.white,),
             iconSize: 32,
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/kategori');
+              Navigator.pushReplacementNamed(context, '/kategori');
             },
             icon: Icon(Icons.grid_view_outlined,color: Colors.white,),
             iconSize: 32,

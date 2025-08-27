@@ -4,6 +4,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:fioke/view/pages/kategori.dart';
 import 'package:fioke/view/pages/beranda.dart';
+import 'package:fioke/view/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,12 +34,11 @@ class MyApp extends StatelessWidget {
               ),
             );
           case '/beranda':
-            final args = settings.arguments; 
-            final namauser = args is String ? args : 'anonym';
-            // kirim namauser
-            return MaterialPageRoute(builder: (_) => FiokeMain(namauser: namauser));
+            return MaterialPageRoute(builder: (_) => FiokeMain());
           case '/kategori':
             return MaterialPageRoute(builder: (_) => Kategori());
+          case '/login':
+            return MaterialPageRoute(builder: (_) => Login());
         }
         return null;
       },

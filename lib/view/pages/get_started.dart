@@ -36,9 +36,7 @@ class _Getstarted extends State<GetStarted> {
                     fit: BoxFit.cover,
                   ),
                   ElevatedButton(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                     return const Login();
-                    }));
+                     Navigator.pushReplacementNamed(context, '/login');
                   }, child: Text("Get Started"))
                 ],
               ),

@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'Masuk untuk mulai belajar',
+                          'Masuk untuk Berbelanja',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.black54),
                         ),
@@ -99,11 +99,8 @@ class _Mytextbar extends State<MyTextBar> {
       );
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FiokeMain(namauser: namauser),
-      ),
+    Navigator.pushReplacementNamed(
+      context,'/beranda',arguments: namauser
     );
   }
 
