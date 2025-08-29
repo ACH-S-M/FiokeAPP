@@ -9,7 +9,7 @@ class CardProduk extends StatelessWidget {
    final String deskripsi;
    final String judul;
    final List<String> poin;
-   CardProduk({required this.nama,required this.harga,required this.gambar,super.key, required this.deskripsi,required this.judul,required this.poin});
+   const CardProduk({required this.nama,required this.harga,required this.gambar,super.key, required this.deskripsi,required this.judul,required this.poin});
   
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class CardProduk extends StatelessWidget {
                   nama, 
                   maxLines: 1, 
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: TextStyle(fontWeight: FontWeight.w500,decoration: TextDecoration.underline),
                 ),
                 SizedBox(height: 4),
                 Text(

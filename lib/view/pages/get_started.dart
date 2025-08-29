@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fioke/view/pages/login_page.dart';
 
 class GetStarted extends StatefulWidget {
-  GetStarted({super.key});
+  const GetStarted({super.key});
   @override
   State<StatefulWidget> createState() => _Getstarted();
 }
@@ -36,7 +36,7 @@ class _Getstarted extends State<GetStarted> {
                     fit: BoxFit.cover,
                   ),
                   ElevatedButton(onPressed: () {
-                     Navigator.pushReplacementNamed(context, '/login');
+                     Navigator.pushReplacementNamed(context, '/beranda');
                   }, child: Text("Get Started"))
                 ],
               ),

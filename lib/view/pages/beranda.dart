@@ -2,55 +2,29 @@ import 'package:fioke/view/component/bottomNav.dart';
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/cardproduk.dart';
 import 'package:fioke/models/dataproduk.dart';
-import 'package:fioke/view/component/searchbar.dart';
 import 'package:fioke/view/component/carousel.dart';
+import 'package:fioke/view/component/topNav.dart';
 
 class FiokeMain extends StatelessWidget {
   const FiokeMain({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const int PrimaryColor = 0xFF1F4E78;
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-            Padding(
-              padding: EdgeInsetsGeometry.fromLTRB(30, 12, 30, 20),
-              child:  Row(
-                children: [
-                   Searchbarwidget(),
-                   IconButton(onPressed: () {
-
-                   }, icon: Icon(Icons.notifications_outlined),
-                   iconSize: 32,),
-                     IconButton(onPressed: () {
-
-                   }, icon: Icon(Icons.shopping_bag_outlined),
-                   iconSize: 32,),
-
-              ]
-              )
-            ),
-            Padding(
-              padding: EdgeInsetsGeometry.fromLTRB(30, 20, 30, 50),
-              child: BannerCarousel(
-                images: [
-                  'images/fanta2.png',
-                  'images/fullcream.png',
-                  'images/kopi.png'
-                ]),),
-              // TERLARIS
+              Topnav(),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "TERLARIS",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                padding: EdgeInsetsGeometry.fromLTRB(30, 20, 30, 50),
+                child: BannerCarousel(
+                  images: [
+                    'images/fanta2.png',
+                    'images/fullcream.png',
+                    'images/kopi.png',
+                  ],
                 ),
               ),
               GridView.builder(
@@ -80,7 +54,34 @@ class FiokeMain extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(child: Bottomnav()),
+      bottomNavigationBar: SafeArea(child: Bottomnav(currentIndex: 0)),
+    );
+  }
+}
+
+class tapTextfield extends StatefulWidget {
+  const tapTextfield({super.key});
+  @override
+  State<StatefulWidget> createState() => _tapTextfield();
+}
+
+class _tapTextfield extends State<tapTextfield> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: TextField(
+        readOnly: true,
+        onTap: () => Navigator.pushNamed(context, '/search'),
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.search), // icon di dalam TextField
+          hintText: "Teh Botol Sosro",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(29)),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Searchbarwidget extends StatefulWidget {
-  Searchbarwidget({super.key});
+  const Searchbarwidget({super.key});
   @override
   State<StatefulWidget> createState() => _Searchbarwidget();
 }
@@ -17,7 +17,6 @@ class _Searchbarwidget extends State<Searchbarwidget> {
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.search), // icon di dalam TextField
           hintText: "Teh Botol Sosro",
-          
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(29)),
           ),

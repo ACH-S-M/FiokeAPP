@@ -4,7 +4,7 @@ class DeskripsiComponent extends StatelessWidget {
   final String deskripsi;
   final String judul;
   final List<String> poin;
-  DeskripsiComponent({required this.judul,required this.deskripsi,required this.poin, Key? key,}) :super (key: key);
+  const DeskripsiComponent({required this.judul,required this.deskripsi,required this.poin, super.key,});
   @override
   Widget build(BuildContext context) {
     return Column(

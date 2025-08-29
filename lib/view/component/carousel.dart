@@ -5,7 +5,7 @@ class BannerCarousel extends StatefulWidget {
   final List<String> images;
   final double height;
 
-  BannerCarousel({required this.images, this.height = 150});
+  const BannerCarousel({super.key, required this.images, this.height = 150});
 
   @override
   _BannerCarouselState createState() => _BannerCarouselState();

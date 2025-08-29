@@ -1,13 +1,13 @@
+
 import 'package:fioke/view/pages/get_started.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:fioke/view/pages/kategori.dart';
 import 'package:fioke/view/pages/beranda.dart';
-import 'package:fioke/view/pages/login_page.dart';
-
-void main() {
-  runApp(const MyApp());
+import 'package:fioke/view/pages/searchpage.dart';
+void main(){
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => AnimatedSplashScreen(
                 splash: Image.asset('images/logofioke.png'),
-                nextScreen: GetStarted(),
+                nextScreen:GetStarted(),
                 backgroundColor: Colors.white,
                 splashTransition: SplashTransition.sizeTransition,
                 pageTransitionType: PageTransitionType.fade,
@@ -34,11 +34,11 @@ class MyApp extends StatelessWidget {
               ),
             );
           case '/beranda':
-            return MaterialPageRoute(builder: (_) => FiokeMain());
+            return MaterialPageRoute(builder: (_) => const FiokeMain());
           case '/kategori':
             return MaterialPageRoute(builder: (_) => Kategori());
-          case '/login':
-            return MaterialPageRoute(builder: (_) => Login());
+          case'/search':
+            return MaterialPageRoute(builder: (_) => Searchpage());
         }
         return null;
       },

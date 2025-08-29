@@ -1,42 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:fioke/view/pages/beranda.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Bottomnav extends StatelessWidget {
-  Bottomnav({super.key});
+  const Bottomnav({super.key, this.currentIndex = 0});
+
+  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
-   const int PrimaryColor = 0xFF1F4E78;
-    return Container(
-      padding: EdgeInsets.fromLTRB(0,12, 0,12),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Color(PrimaryColor)
+    return SafeArea(
+      top: false,
+      child: Container(
+       height: 80,
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 6),
+        width: double.infinity,
+        decoration: BoxDecoration(color: Colors.white),
+        child: _BottomNavContent(currentIndex: currentIndex),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            onPressed: () {
-               Navigator.pushReplacementNamed(context, '/beranda');
-            },
-            icon: Icon(Icons.home_outlined,color: Colors.white,),
-            iconSize: 32,
-          ),
-          IconButton(
-            onPressed: () {
+    );
+  }
+}
+
+class _BottomNavContent extends StatelessWidget {
+  const _BottomNavContent({required this.currentIndex});
+
+  final int currentIndex;
+  @override
+  Widget build(BuildContext context) {
+    final bool isHome = currentIndex == 0;
+    final bool isKategori = currentIndex == 1;
+    final bool isProfile = currentIndex == 2;
+    final int isActive = 0xff6A84F9;
+    final int nonActive = 0xffC2DDEA;
+
+    Widget buildItem({
+      required String activeIcon,
+      required String inactiveIcon,
+      required String label,
+      required bool active,
+      required VoidCallback onTap,
+    }) {
+      final String assetPath = active ? activeIcon : inactiveIcon;
+      final Color textColor = active ? Color(isActive) : Color(nonActive);
+      return GestureDetector(
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(assetPath),
+            Text(label, style: TextStyle(color: textColor))
+          ],
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        buildItem(
+          activeIcon: 'svg/active/homeActive.svg',
+          inactiveIcon: 'svg/nonactive/home.svg',
+          label: 'Home',
+          active: isHome,
+          onTap: () {
+            if (!isHome) {
+              Navigator.pushReplacementNamed(context, '/beranda');
+            }
+          },
+        ),
+        buildItem(
+          activeIcon: 'svg/active/categoryActive.svg',
+          inactiveIcon: 'svg/nonactive/category.svg',
+          label: 'Kategori',
+          active: isKategori,
+          onTap: () {
+            if (!isKategori) {
               Navigator.pushReplacementNamed(context, '/kategori');
-            },
-            icon: Icon(Icons.grid_view_outlined,color: Colors.white,),
-            iconSize: 32,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.person_2_outlined,color: Colors.white,),
-            iconSize: 32,
-          ),
-        ],
-      ),
+            }
+          },
+        ),
+        buildItem(
+          activeIcon: 'svg/active/profileActive.svg',
+          inactiveIcon: 'svg/nonactive/profile.svg',
+          label: 'Profile',
+          active: isProfile,
+          onTap: () {
+            if (!isProfile) {
+             Navigator.pushReplacementNamed(context, '/beranda');
+            }
+          },
+        ),
+      ],
     );
   }
 }
