@@ -1,11 +1,11 @@
 
 import 'package:fioke/view/pages/get_started.dart';
+import 'package:fioke/view/pages/keranjang.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:fioke/view/pages/kategori.dart';
 import 'package:fioke/view/pages/beranda.dart';
-import 'package:fioke/view/pages/searchpage.dart';
 void main(){
   runApp(MyApp());
 }
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const FiokeMain());
           case '/kategori':
             return MaterialPageRoute(builder: (_) => Kategori());
-          case'/search':
-            return MaterialPageRoute(builder: (_) => Searchpage());
+          case'/keranjang':
+            return MaterialPageRoute(builder: (_) => CartPage());
         }
         return null;
       },

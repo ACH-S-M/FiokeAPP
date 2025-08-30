@@ -49,7 +49,7 @@ class Topnav extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/kategori');
+                      Navigator.pushNamed(context, '/keranjang');
                     },
                     child: SvgPicture.asset('svg/cart.svg'),
                   ),
