@@ -1,7 +1,6 @@
 
 import 'package:fioke/view/pages/detail.dart';
 import 'package:flutter/material.dart';
-
 class CardProduk extends StatelessWidget {
    final String nama;
    final String harga;

@@ -1,16 +1,16 @@
+
 import 'package:flutter/material.dart';
 import 'package:fioke/models/cartitem.dart';
-import 'package:fioke/models/product.dart';
-
-
+import 'package:fioke/services/user_services.dart';
+import 'package:fioke/view/component/rekomendasi.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
   @override
   State<CartPage> createState() => _CartPageState();
 }
+
 class _CartPageState extends State<CartPage> {
-  // Dummy data (ganti sesuka hati)
   final List<CartItem> _items = [
     CartItem(
       id: 1,
@@ -28,7 +28,7 @@ class _CartPageState extends State<CartPage> {
       selected: false,
       qty: 1,
     ),
-       CartItem(
+    CartItem(
       id: 3,
       title: 'Judul produk',
       price: 200,
@@ -37,16 +37,6 @@ class _CartPageState extends State<CartPage> {
       qty: 1,
     ),
   ];
-  final List<Product> _recommendations = List.generate(
-    6,
-    (i) => Product(
-      title: i.isEven
-          ? 'Susu Milo kaleng 200ml (perkarton) isi 24 pcs'
-          : 'Susu Milo kaleng 200ml (perkarton)',
-      price: 220000,
-      imageUrl: 'https://picsum.photos/seed/milo$i/600/400',
-    ),
-  );
 
   bool get _allSelected => _items.isNotEmpty && _items.every((e) => e.selected);
 
@@ -54,15 +44,31 @@ class _CartPageState extends State<CartPage> {
   String? _voucherCode;
 
   // Hitung total hanya dari item yang tercentang
-  int get _subtotalSelected =>
-      _items.where((e) => e.selected).fold(0, (sum, e) => sum + e.price * e.qty);
+  int get _subtotalSelected => _items
+      .where((e) => e.selected)
+      .fold(0, (sum, e) => sum + e.price * e.qty);
 
   int get _grandTotal => (_subtotalSelected - _discount).clamp(0, 1 << 31);
+
+  String rupiah(int value) {
+    // formatter sederhana (tanpa intl) – cukup buat demo
+    final s = value.toString();
+    final buf = StringBuffer();
+    for (int i = 0; i < s.length; i++) {
+      final idxFromRight = s.length - i;
+      buf.write(s[i]);
+      if (idxFromRight > 1 && idxFromRight % 3 == 1)
+        buf.write('.'); // kalo lebih dari 99 ribu bakan ada . misal 100.000
+    }
+    return 'Rp. ${buf.toString()}';
+  }
 
   /* ------------------------------ WIDGETS ------------------------------ */
   @override
   Widget build(BuildContext context) {
-    final selectedCount = _items.where((e) => e.selected).length; // hitung sebanyak apaa yang nanti dipilih 
+    final selectedCount = _items
+        .where((e) => e.selected)
+        .length; // hitung sebanyak apaa yang nanti dipilih
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,17 +77,19 @@ class _CartPageState extends State<CartPage> {
         titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);  // balik ke home beranda 
+            Navigator.pop(context); // balik ke home beranda
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Keranjang Anda (${_items.length})', // app bar 
-            style: const TextStyle(color: Colors.white)),
+        title: Text(
+          'Keranjang Anda (${_items.length})', // app bar
+          style: const TextStyle(color: Colors.white),
+        ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 12.0),
             child: Icon(Icons.notifications_none, color: Colors.white),
-          )
+          ),
         ],
       ),
 
@@ -109,12 +117,13 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: _buildRecommendationGrid(),
-              ),
 
-              const SizedBox(height: 90),
+              const SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsetsDirectional.only(start: 12,end: 12),
+                child:Rekomendasi() ,
+              
+              )
             ],
           ),
         ),
@@ -152,10 +161,13 @@ class _CartPageState extends State<CartPage> {
                 children: [
                   Checkbox(
                     value: _allSelected,
-                    onChanged: (v) => setState( //state kalo di ceklis, bener nanti dia jadi true di _items, 
-                        () => _items.forEach((e) => e.selected = v ?? false)), // jadi kepilih semua 
+                    onChanged: (v) => setState(
+                      //state kalo di ceklis, bener nanti dia jadi true di _items,
+                      () => _items.forEach((e) => e.selected = v ?? false),
+                    ), // jadi kepilih semua
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                   ),
                   const SizedBox(width: 4),
                   const Text(
@@ -169,16 +181,18 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
           ),
-          const Divider(height: 1), // garis di bawah 
- 
+          const Divider(height: 1), // garis di bawah
           // Daftar item
-          ..._items.map((e) => _buildCartRow(e)).toList(), //bawahnya pengulangan dari item yg ada di _items 
+          ..._items
+              .map((e) => _buildCartRow(e))
+              .toList(), //bawahnya pengulangan dari item yg ada di _items
           const SizedBox(height: 8),
         ],
       ),
     );
   }
-   // -------- INI card keranjang nya --------------
+
+  // -------- INI card keranjang nya --------------
   Widget _buildCartRow(CartItem item) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -188,8 +202,12 @@ class _CartPageState extends State<CartPage> {
           // Checkbox di kiri
           Checkbox(
             value: item.selected,
-            onChanged: (v) => setState(() => item.selected = v ?? false), // kalo di ceklis dia nambah 
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), //lengkung 
+            onChanged: (v) => setState(
+              () => item.selected = v ?? false,
+            ), // kalo di ceklis dia nambah
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ), //lengkung
           ),
 
           // Gambar produk
@@ -214,10 +232,13 @@ class _CartPageState extends State<CartPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Judul produk',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey.shade900)),
+                  Text(
+                    'Judul produk',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.grey.shade900,
+                    ),
+                  ),
                   const SizedBox(height: 2),
                   Text(
                     rupiah(item.price),
@@ -232,21 +253,24 @@ class _CartPageState extends State<CartPage> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _qtyButton( //quantity button 
-
-                icon: Icons.remove, //min 
+              _qtyButton(
+                //quantity button
+                icon: Icons.remove, //min
                 onTap: () => setState(() {
-                  if (item.qty > 1) item.qty--; //kalo item lebih dari 1 maka bisa dikurang 
+                  if (item.qty > 1)
+                    item.qty--; //kalo item lebih dari 1 maka bisa dikurang
                 }),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('${item.qty}',
-                    style: const TextStyle(fontWeight: FontWeight.w600)),
+                child: Text(
+                  '${item.qty}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
               _qtyButton(
-                icon: Icons.add, // plus 
-                onTap: () => setState(() => item.qty++), // nambah 
+                icon: Icons.add, // plus
+                onTap: () => setState(() => item.qty++), // nambah
               ),
               const SizedBox(width: 6),
             ],
@@ -260,7 +284,8 @@ class _CartPageState extends State<CartPage> {
     return InkResponse(
       onTap: onTap,
       radius: 20,
-      child: Container(  // ini buat design button increment nya 
+      child: Container(
+        // ini buat design button increment nya
         width: 28,
         height: 28,
         alignment: Alignment.center,
@@ -272,70 +297,7 @@ class _CartPageState extends State<CartPage> {
       ),
     );
   }
-// ----------------- Grid rekomendasi ------------------ 
-  Widget _buildRecommendationGrid() {
-    return GridView.builder(
-      itemCount: _recommendations.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 0.72,
-      ),
-      itemBuilder: (_, i) {
-        final p = _recommendations[i];
-        return Card(
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 2,
-          child: InkWell(
-            onTap: () {
-              // future: navigate to detail
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // image
-                AspectRatio(
-                  aspectRatio: 4 / 3,
-                  child: Ink.image(
-                    image: NetworkImage(p.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // text
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
-                  child: Text(
-                    p.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 12.5, color: Colors.grey.shade900),
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
-                  child: Text(
-                    rupiah(p.price),
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // ----------------- Grid rekomendasi ------------------
 
   Widget _buildVoucherBar(BuildContext context) {
     return Material(
@@ -348,7 +310,10 @@ class _CartPageState extends State<CartPage> {
           children: [
             const Icon(Icons.confirmation_num_outlined),
             const SizedBox(width: 8),
-            const Text('Voucher', style: TextStyle(fontWeight: FontWeight.w600)),
+            const Text(
+              'Voucher',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(width: 12),
             const Expanded(
               child: Text(
@@ -379,13 +344,20 @@ class _CartPageState extends State<CartPage> {
             Expanded(
               child: Container(
                 color: Colors.indigo.shade50,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Total',
-                        style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                    const Text(
+                      'Total',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                     const SizedBox(height: 2),
                     Text(
                       rupiah(_grandTotal),
@@ -398,7 +370,10 @@ class _CartPageState extends State<CartPage> {
                     if (_discount > 0)
                       Text(
                         'Termasuk diskon: -${rupiah(_discount)}',
-                        style: const TextStyle(fontSize: 11, color: Colors.green),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.green,
+                        ),
                       ),
                   ],
                 ),
@@ -412,9 +387,13 @@ class _CartPageState extends State<CartPage> {
                     ? null
                     : () {
                         // future: go to payment
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
                             content: Text(
-                                'Checkout $selectedCount item, bayar ${rupiah(_grandTotal)}')));
+                              'Checkout $selectedCount item, bayar ${rupiah(_grandTotal)}',
+                            ),
+                          ),
+                        );
                       },
                 child: Container(
                   height: double.infinity,
@@ -425,9 +404,10 @@ class _CartPageState extends State<CartPage> {
                   child: const Text(
                     'Check Out',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
@@ -448,25 +428,31 @@ class _CartPageState extends State<CartPage> {
       builder: (_) {
         return Padding(
           padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-              top: 8,
-              left: 16,
-              right: 16),
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            top: 8,
+            left: 16,
+            right: 16,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Masukkan Kode Voucher',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+              const Text(
+                'Masukkan Kode Voucher',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
               const SizedBox(height: 10),
               TextField(
                 controller: ctrl,
                 decoration: InputDecoration(
                   hintText: 'Contoh: HEMAT10',
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -483,10 +469,15 @@ class _CartPageState extends State<CartPage> {
                           _discount = discount;
                         });
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(discount > 0
-                                ? 'Voucher diterapkan: -${rupiah(discount)}'
-                                : 'Kode tidak valid')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              discount > 0
+                                  ? 'Voucher diterapkan: -${rupiah(discount)}'
+                                  : 'Kode tidak valid',
+                            ),
+                          ),
+                        );
                       },
                       child: const Text('Terapkan'),
                     ),
@@ -502,14 +493,3 @@ class _CartPageState extends State<CartPage> {
 }
 
 /* ------------------------------ HELPERS -------------------------------- */
-String rupiah(int value) {
-  // formatter sederhana (tanpa intl) – cukup buat demo
-  final s = value.toString();
-  final buf = StringBuffer();
-  for (int i = 0; i < s.length; i++) {
-    final idxFromRight = s.length - i;
-    buf.write(s[i]);
-    if (idxFromRight > 1 && idxFromRight % 3 == 1) buf.write('.'); // kalo lebih dari 99 ribu bakan ada . misal 100.000
-  }
-  return 'Rp. ${buf.toString()}';
-}
