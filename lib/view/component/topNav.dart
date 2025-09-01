@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Topnav extends StatelessWidget {
-  Topnav({super.key});
+  const Topnav({super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(

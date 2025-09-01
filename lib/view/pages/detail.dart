@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/ClickedBtn.dart';
 import 'package:fioke/view/component/deskripsiLayout.dart';
+
 class Detail extends StatelessWidget {
   final String nama;
   final String harga;
@@ -20,6 +21,9 @@ class Detail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if gambar is a network URL or asset path
+    bool isNetworkImage = gambar.startsWith('http://') || gambar.startsWith('https://');
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,13 +42,29 @@ class Detail extends StatelessWidget {
                 width: double.infinity,
                 height: 300,
                 decoration: BoxDecoration(),
-                child: Image.asset(
-                  gambar,
-                  width: 440,
-                  height: 440,
-                  scale: 90,
-                  fit: BoxFit.fill,
-                ),
+                child: isNetworkImage
+                  ? Image.network(
+                      gambar,
+                      width: 440,
+                      height: 440,
+                      scale: 90,
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 440,
+                          height: 440,
+                          color: Colors.grey[300],
+                          child: Icon(Icons.error, size: 50, color: Colors.grey[600]),
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      gambar,
+                      width: 440,
+                      height: 440,
+                      scale: 90,
+                      fit: BoxFit.fill,
+                    ),
               ),
               Padding(
                 padding: EdgeInsetsGeometry.fromLTRB(30, 30, 30, 0),

@@ -1,87 +1,125 @@
 import 'package:fioke/view/component/bottomNav.dart';
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/cardproduk.dart';
-import 'package:fioke/models/dataproduk.dart';
+import 'package:fioke/services/user_services.dart';
 import 'package:fioke/view/component/carousel.dart';
 import 'package:fioke/view/component/topNav.dart';
+import 'package:fioke/models/Produk.dart';
 
-class FiokeMain extends StatelessWidget {
+
+class FiokeMain extends StatefulWidget {
   const FiokeMain({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<FiokeMain> createState() => _FiokeMainState();
+}
 
+class _FiokeMainState extends State<FiokeMain> {
+  late Future<List<Produk>> _futureProduk;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureProduk = Servicesuser().user_Service();
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      _futureProduk = Servicesuser().user_Service();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Topnav(),
-              Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(30, 20, 30, 50),
-                child: BannerCarousel(
-                  images: [
-                    'images/fanta2.png',
-                    'images/fullcream.png',
-                    'images/kopi.png',
-                  ],
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(), // wajib biar bisa tarik
+            child: Column(
+              children: [
+                Topnav(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 20, 30, 50),
+                  child: BannerCarousel(
+                    images: [
+                      'images/fanta2.png',
+                      'images/fullcream.png',
+                      'images/kopi.png',
+                    ],
+                  ),
                 ),
-              ),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.all(16),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 0.7,
+                FutureBuilder(
+                  future: _futureProduk,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error, size: 50, color: Colors.red),
+                            const SizedBox(height: 16),
+                            Text("Error: ${snapshot.error}"),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _refresh,
+                              child: const Text("Coba Lagi"),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text("Tidak ada data produk"),
+                      );
+                    }
+
+                    final produkList = snapshot.data!;
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.7,
+                      ),
+                      itemCount: produkList.length,
+                      itemBuilder: (context, index) {
+                        final produk = produkList[index];
+
+                        return CardProduk(
+                          nama: produk.nama_produk,
+                          harga: produk.harga_produk.toString(),
+                          gambar: produk.gambar_produk,
+                          deskripsi: produk.deskripsi_produk,
+                          judul: produk.nama_produk,
+                          poin: [
+                            "Stok: ${produk.stok}",
+                            "Terjual: ${produk.barang_terjual}",
+                            "ID: ${produk.ID_Produk}",
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
-                itemCount: dataproduk.length,
-                itemBuilder: (context, index) {
-                  final produk = dataproduk[index];
-                  return CardProduk(
-                    nama: produk.nama,
-                    harga: produk.harga,
-                    gambar: produk.gambar,
-                    deskripsi: produk.deskripsi,
-                    judul: produk.juduldeskripsi,
-                    poin: produk.poin,
-                  );
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(child: Bottomnav(currentIndex: 0)),
+      bottomNavigationBar: const SafeArea(child: Bottomnav(currentIndex: 0)),
     );
   }
 }
 
-class tapTextfield extends StatefulWidget {
-  const tapTextfield({super.key});
-  @override
-  State<StatefulWidget> createState() => _tapTextfield();
-}
-
-class _tapTextfield extends State<tapTextfield> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: TextField(
-        readOnly: true,
-        onTap: () => Navigator.pushNamed(context, '/search'),
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search), // icon di dalam TextField
-          hintText: "Teh Botol Sosro",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(29)),
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        ),
-      ),
-    );
-  }
-}

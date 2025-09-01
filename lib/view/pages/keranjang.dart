@@ -57,8 +57,9 @@ class _CartPageState extends State<CartPage> {
     for (int i = 0; i < s.length; i++) {
       final idxFromRight = s.length - i;
       buf.write(s[i]);
-      if (idxFromRight > 1 && idxFromRight % 3 == 1)
+      if (idxFromRight > 1 && idxFromRight % 3 == 1) {
         buf.write('.'); // kalo lebih dari 99 ribu bakan ada . misal 100.000
+      }
     }
     return 'Rp. ${buf.toString()}';
   }
@@ -185,7 +186,7 @@ class _CartPageState extends State<CartPage> {
           // Daftar item
           ..._items
               .map((e) => _buildCartRow(e))
-              .toList(), //bawahnya pengulangan dari item yg ada di _items
+              , //bawahnya pengulangan dari item yg ada di _items
           const SizedBox(height: 8),
         ],
       ),
@@ -257,8 +258,9 @@ class _CartPageState extends State<CartPage> {
                 //quantity button
                 icon: Icons.remove, //min
                 onTap: () => setState(() {
-                  if (item.qty > 1)
+                  if (item.qty > 1) {
                     item.qty--; //kalo item lebih dari 1 maka bisa dikurang
+                  }
                 }),
               ),
               Padding(

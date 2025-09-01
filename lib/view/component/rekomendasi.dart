@@ -8,13 +8,16 @@ String rupiah(int value) {
   for (int i = 0; i < s.length; i++) {
     final idxFromRight = s.length - i;
     buf.write(s[i]);
-    if (idxFromRight > 1 && idxFromRight % 3 == 1)
+    if (idxFromRight > 1 && idxFromRight % 3 == 1) {
       buf.write('.'); // kalo lebih dari 99 ribu bakan ada . misal 100.000
+    }
   }
   return 'Rp. ${buf.toString()}';
 }
 
 class Rekomendasi extends StatelessWidget {
+  const Rekomendasi({super.key});
+
   @override
   Widget build(BuildContext context) {
     {
