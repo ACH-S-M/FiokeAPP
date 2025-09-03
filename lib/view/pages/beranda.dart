@@ -1,7 +1,7 @@
 import 'package:fioke/view/component/bottomNav.dart';
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/cardproduk.dart';
-import 'package:fioke/services/user_services.dart';
+import 'package:fioke/viewmodel/ProdukViewModel.dart';
 import 'package:fioke/view/component/carousel.dart';
 import 'package:fioke/view/component/topNav.dart';
 import 'package:fioke/models/Produk.dart';
@@ -20,12 +20,12 @@ class _FiokeMainState extends State<FiokeMain> {
   @override
   void initState() {
     super.initState();
-    _futureProduk = Servicesuser().user_Service();
+    _futureProduk = Produkviewmodel().user_Service();
   }
 
   Future<void> _refresh() async {
     setState(() {
-      _futureProduk = Servicesuser().user_Service();
+      _futureProduk = Produkviewmodel().user_Service();
     });
   }
 

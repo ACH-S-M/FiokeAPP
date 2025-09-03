@@ -1,5 +1,5 @@
+import 'package:fioke/viewmodel/ProdukViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:fioke/services/user_services.dart';
 
 String rupiah(int value) {
   // formatter sederhana (tanpa intl) – cukup buat demo
@@ -21,7 +21,7 @@ class Rekomendasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {
-      final api = Servicesuser();
+      final api = Produkviewmodel();
       return FutureBuilder(
         future: api.user_Service(),
         builder: (context, snapshot) {

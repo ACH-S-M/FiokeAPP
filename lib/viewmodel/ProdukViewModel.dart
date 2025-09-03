@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fioke/models/Produk.dart';
 import 'package:fioke/network/api_services.dart';
 
-class Servicesuser {
+class Produkviewmodel {
   // Helper function to construct full image URL
   static String getFullImageUrl(String imagePath) {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {

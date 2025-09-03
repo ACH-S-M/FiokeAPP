@@ -44,7 +44,7 @@ class _Promocard extends State<Promocard> {
             child: Image.asset(
               widget.gambar,
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.18,
               fit: BoxFit.cover,
             ),
           ),
@@ -61,6 +61,13 @@ class _Promocard extends State<Promocard> {
                       color: Colors.green,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.directional(top: 8, bottom: 8),
+                  child: ProgressIndicatorTheme(
+                    data: ProgressIndicatorThemeData(color: Colors.green),
+                    child: LinearProgressIndicator(value: 0.7, minHeight: 5),
                   ),
                 ),
               ],
