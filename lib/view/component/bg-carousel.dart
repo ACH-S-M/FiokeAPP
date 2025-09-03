@@ -30,7 +30,7 @@ class _BannerCarouselState extends State<BgCarousel> {
       _controller.animateToPage(
         _currentPage,
         duration: Duration(milliseconds: 500),
-        curve: Curves.bounceInOut,
+        curve: Curves.easeInOut,
       );
     });
   }

@@ -21,44 +21,44 @@ class Detail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check if gambar is a network URL or asset path
+    // Kalo gambar itu network image hasil dari API dia berawalan http atau https
     bool isNetworkImage = gambar.startsWith('http://') || gambar.startsWith('https://');
     
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+      body: SafeArea(  // Agar tidak tertutup notch atau status bar 
+        child: SingleChildScrollView(  // Agar bisa di scroll
+          child: Column(  
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              Container(  // Container untuk gambar atas dengan width penuh 
                 width: double.infinity,
                 height: 300,
                 decoration: BoxDecoration(),
-                child: isNetworkImage
-                  ? Image.network(
-                      gambar,
+                child: isNetworkImage  //apakah gambar dari network atau asset
+                  ? Image.network(  
+                      gambar, //ambill dari parameter gambar yang dikirim dari card 
                       width: 440,
                       height: 440,
                       scale: 90,
                       fit: BoxFit.fill,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 440,
+                      errorBuilder: (context, error, stackTrace) {  // Jika gagal memuat gambar
+                        return Container( 
+                          width: 440,  //kasih placeholder saat gagal memuat gambar
                           height: 440,
                           color: Colors.grey[300],
                           child: Icon(Icons.error, size: 50, color: Colors.grey[600]),
                         );
                       },
                     )
-                  : Image.asset(
+                  : Image.asset(  //kalo gambar dari asset dia ambil gambar dari hardware 
                       gambar,
                       width: 440,
                       height: 440,
@@ -67,12 +67,12 @@ class Detail extends StatelessWidget {
                     ),
               ),
               Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(30, 30, 30, 0),
-                child: Row(
+                padding: EdgeInsetsGeometry.fromLTRB(30, 30, 30, 0),  //padding kiri, atas, kanan, bawah
+                child: Row( // Row untuk harga dan icon button
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Rp. $harga',
+                      'Rp. $harga', //harganya ini ambil dari parameter harga yang dikirim dari card
                       style: TextStyle(
                         fontFamily: 'Poppins-Semibold',
                         fontSize: 24,
@@ -84,7 +84,7 @@ class Detail extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const ClickedBtn(),
+                      icon: const ClickedBtn(), 
                       iconSize: 28,
                     ),
                   ],
@@ -97,7 +97,7 @@ class Detail extends StatelessWidget {
                   Padding(
                     padding: EdgeInsetsGeometry.fromLTRB(30, 0, 30, 40),
                     child: Text(
-                      nama,
+                      nama, //nama produk diambil dari parameter nama yang dikirim dari card
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins-Semibold',
@@ -111,10 +111,13 @@ class Detail extends StatelessWidget {
             children: [
               // --- List item dengan icon ---
               _buildListTile(Icons.local_shipping, "Estimasi pengiriman 2-3 hari"),
+              const Divider(thickness: 2, indent: 22,endIndent: 22,),
               const SizedBox(height: 8),
               _buildListTile(Icons.check_circle_outline, "OkeOce pastikan dulu paket anda"),
+                const Divider(thickness: 2, indent: 22,endIndent: 22,),
               const SizedBox(height: 8),
               _buildListTile(Icons.credit_card, "Pembayaran dengan cicilan 3x"),
+                const Divider(thickness: 2, indent: 22,endIndent: 22,),
               const SizedBox(height: 16),
 
               // --- Bar biru ---
@@ -300,8 +303,9 @@ class Detail extends StatelessWidget {
   Widget _buildListTile(IconData icon, String text) {
     return Container(
       padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 22),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

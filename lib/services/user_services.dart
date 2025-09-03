@@ -11,9 +11,9 @@ class Servicesuser {
     
     // If it's a relative path, construct full URL
     if (imagePath.startsWith('/')) {
-      return 'http://10.103.227.198:8000$imagePath';
+      return 'http://10.103.227.87:8000$imagePath';
     } else {
-      return 'http://10.103.227.198:8000/$imagePath';
+      return 'http://10.103.227.87:8000/$imagePath';
     }
   }
 

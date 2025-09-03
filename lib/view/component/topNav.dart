@@ -11,7 +11,7 @@ class Topnav extends StatelessWidget {
         child: Row(
           children: [
             // Search Bar
-            Expanded(
+            Expanded( 
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 height: 40,

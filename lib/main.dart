@@ -6,6 +6,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:fioke/view/pages/kategori.dart';
 import 'package:fioke/view/pages/beranda.dart';
+import 'package:fioke/view/pages/promo.dart';
 void main(){
   runApp(MyApp());
 }
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => Kategori());
           case'/keranjang':
             return MaterialPageRoute(builder: (_) => CartPage());
+          case '/promo' :
+            return MaterialPageRoute(builder: (_) => PromoPage());
         }
         return null;
       },

@@ -29,7 +29,8 @@ class _BottomNavContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isHome = currentIndex == 0;
     final bool isKategori = currentIndex == 1;
-    final bool isProfile = currentIndex == 2;
+    final bool isPromo = currentIndex == 2;
+    final bool isProfile = currentIndex == 3;
     final int isActive = 0xff6A84F9;
     final int nonActive = 0xffC2DDEA;
 
@@ -76,6 +77,17 @@ class _BottomNavContent extends StatelessWidget {
           onTap: () {
             if (!isKategori) {
               Navigator.pushReplacementNamed(context, '/kategori');
+            }
+          },
+        ),
+        buildItem(
+          activeIcon:'svg/active/promoActive.svg' ,
+          inactiveIcon:'svg/nonactive/promo.svg' ,
+          label:'Promo' ,
+          active:isPromo ,
+          onTap: () {
+            if (!isPromo) {
+              Navigator.pushReplacementNamed(context, '/promo');
             }
           },
         ),
