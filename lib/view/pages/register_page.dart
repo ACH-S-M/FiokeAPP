@@ -2,18 +2,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/Input/TextfieldComponent.dart';
 import 'package:fioke/network/api_services.dart';
-class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+
+class RegisterPage extends StatefulWidget {
+  RegisterPage({super.key});
   @override
-  State<StatefulWidget> createState() => _Loginpage();
+  State<StatefulWidget> createState() => _RegisterPage();
 }
 
-class _Loginpage extends State<LoginPage> {
+class _RegisterPage extends State<RegisterPage> {
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
   @override
   void dispose() {
+    _name.dispose();
     _email.dispose();
     _password.dispose();
     super.dispose();
@@ -23,7 +26,9 @@ class _Loginpage extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -40,7 +45,7 @@ class _Loginpage extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.3,
                       ),
                       Text(
-                        'Login',
+                        'Daftar ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color(0xff035F79),
@@ -51,14 +56,21 @@ class _Loginpage extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+               const SizedBox(height: 32),
               Center(
                 child: Padding(
                   padding: EdgeInsetsGeometry.fromLTRB(48, 8, 48, 8),
                   child: Column(
                     children: [
                       MakeTextfield(
-                        text: "Username",
+                        text: "Nama",
+                        icon: Icon(Icons.person),
+                        controller: _name,
+                        isPassword: false,
+                      ),
+                      const SizedBox(height: 18),
+                      MakeTextfield(
+                        text: "Email",
                         icon: Icon(Icons.mail),
                         controller: _email,
                         isPassword: false,
@@ -75,7 +87,8 @@ class _Loginpage extends State<LoginPage> {
                       ElevatedButton(
                         onPressed: () async {
                          try{
-                             Response response = await ApiService().postData('api/login', {
+                             Response response = await ApiService().postData('api/register', {
+                              "name" : _name.text.trim(),
                               "email": _email.text.trim(),
                               "password" : _password.text.trim()
                           });
@@ -92,6 +105,7 @@ class _Loginpage extends State<LoginPage> {
                             if(e.response?.statusCode == 422){
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Format email salaah, kasih @mail.com")));
                             }
+                            print("salahnya di $e");
                          }
                         },
                         style: ElevatedButton.styleFrom(
@@ -107,14 +121,14 @@ class _Loginpage extends State<LoginPage> {
                             ), // biar rounded
                           ),
                         ),
-                        child: Text("Login", style: TextStyle(fontSize: 20)),
+                        child: Text("Daftar", style: TextStyle(fontSize: 20)),
                       ),
                       const SizedBox(height: 36,),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pop(context);
                         },
-                        child: Text("Belum Punya akun? Daftar Disini "),
+                        child: Text("Sudah Punya Akun? Login disini"),
                       )
 
                     ],

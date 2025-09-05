@@ -47,7 +47,7 @@ class _Getstarted extends State<GetStarted> {
                       height: MediaQuery.of(context).size.height * 0.08,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/beranda');
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                         child: Text(
                           "Get Started",

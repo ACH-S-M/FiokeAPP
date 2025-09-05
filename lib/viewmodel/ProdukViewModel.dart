@@ -3,27 +3,23 @@ import 'package:fioke/models/Produk.dart';
 import 'package:fioke/network/api_services.dart';
 
 class Produkviewmodel {
-  // Helper function to construct full image URL
+  // Fungsi Pembantu untuk nambah http / di path gambar, kalo ga make nanti bakal ambil data gambar.png aja 
   static String getFullImageUrl(String imagePath) {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-      return imagePath; // Already a full URL
+      return imagePath; // sudah dengan http 
     }
     
-    // If it's a relative path, construct full URL
+    // Kalo ini diawalai dengan / 
     if (imagePath.startsWith('/')) {
-      return 'http://10.103.227.87:8000$imagePath';
+      return 'http://10.103.227.182$imagePath';
     } else {
-      return 'http://10.103.227.87:8000/$imagePath';
+      return 'http://10.103.227.182/$imagePath';
     }
   }
 
   Future<List<Produk>> user_Service() async {
     try {
-      Response response = await ApiService.dio.get('api/produk');
-      
-      // Debug: print response data
-      print('API Response: ${response.data}');
-      
+      Response response = await ApiService().getData('api/produk');
       if (response.data == null) {
         throw Exception('Response data is null');
       }
@@ -33,20 +29,12 @@ class Produkviewmodel {
       }
       
       List<dynamic> dataList = response.data['data'] as List;
-      print('Data list length: ${dataList.length}');
-      
-      if (dataList.isNotEmpty) {
-        print('First item: ${dataList.first}');
-      }
       
       List<Produk> produk = dataList
           .map((json) {
             try {
-              print('Parsing item hasilnya adalah : $json');
-              // Convert image path to full URL
               if (json['gambar_produk'] != null) {
                 json['gambar_produk'] = getFullImageUrl(json['gambar_produk']);
-                print('Converted image URL: ${json['gambar_produk']}');
               }
               return Produk.fromjson(json);
             } catch (e) {

@@ -7,6 +7,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:fioke/view/pages/kategori.dart';
 import 'package:fioke/view/pages/beranda.dart';
 import 'package:fioke/view/pages/promo.dart';
+import 'package:fioke/view/pages/login_page.dart';
+import 'package:fioke/view/pages/register_page.dart';
 void main(){
   runApp(MyApp());
 }
@@ -34,6 +36,10 @@ class MyApp extends StatelessWidget {
                 duration: 4000,
               ),
             );
+          case '/login' : 
+            return MaterialPageRoute(builder: (_) => LoginPage() );
+          case '/register' : 
+            return MaterialPageRoute(builder: (_) => RegisterPage() );
           case '/beranda':
             return MaterialPageRoute(builder: (_) => const FiokeMain());
           case '/kategori':
