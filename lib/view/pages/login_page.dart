@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fioke/view/component/Input/TextfieldComponent.dart';
 import 'package:fioke/network/api_services.dart';
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
   @override
   State<StatefulWidget> createState() => _Loginpage();
 }
@@ -80,7 +80,7 @@ class _Loginpage extends State<LoginPage> {
                               "password" : _password.text.trim()
                           });
                             if(response.statusCode == 200) {
-                              Navigator.pushNamed(context, '/beranda');
+                              Navigator.pushReplacementNamed(context, '/beranda');
                             }
                          }on DioException catch(e) {
                             if(e.response?.statusCode == 401){
@@ -98,8 +98,8 @@ class _Loginpage extends State<LoginPage> {
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 108,
-                            vertical: 16,
+                            horizontal: 113,
+                            vertical: 10,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(

@@ -11,9 +11,9 @@ class Produkviewmodel {
     
     // Kalo ini diawalai dengan / 
     if (imagePath.startsWith('/')) {
-      return 'http://10.103.227.182$imagePath';
+      return 'http://10.103.227.82$imagePath';
     } else {
-      return 'http://10.103.227.182/$imagePath';
+      return 'http://10.103.227.82/$imagePath';
     }
   }
 

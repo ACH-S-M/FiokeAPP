@@ -4,7 +4,7 @@ import 'package:fioke/view/component/Input/TextfieldComponent.dart';
 import 'package:fioke/network/api_services.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({super.key});
+  const RegisterPage({super.key});
   @override
   State<StatefulWidget> createState() => _RegisterPage();
 }
@@ -93,7 +93,7 @@ class _RegisterPage extends State<RegisterPage> {
                               "password" : _password.text.trim()
                           });
                             if(response.statusCode == 200) {
-                              Navigator.pushNamed(context, '/beranda');
+                              Navigator.pushReplacementNamed(context, '/beranda');
                             }
                          }on DioException catch(e) {
                             if(e.response?.statusCode == 401){

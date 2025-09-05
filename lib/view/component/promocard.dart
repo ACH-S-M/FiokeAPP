@@ -4,7 +4,7 @@ class Promocard extends StatefulWidget {
   final String gambar;
   final String nama;
   final String harga;
-  Promocard({
+  const Promocard({
     super.key,
     required this.gambar,
     required this.nama,
