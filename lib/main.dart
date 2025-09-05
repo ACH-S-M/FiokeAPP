@@ -9,6 +9,7 @@ import 'package:fioke/view/pages/beranda.dart';
 import 'package:fioke/view/pages/promo.dart';
 import 'package:fioke/view/pages/login_page.dart';
 import 'package:fioke/view/pages/register_page.dart';
+import 'package:fioke/view/pages/pencarian.dart';
 void main(){
   runApp(MyApp());
 }
@@ -48,6 +49,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => CartPage());
           case '/promo' :
             return MaterialPageRoute(builder: (_) => PromoPage());
+           case '/pencarian' :
+            return MaterialPageRoute(builder: (_) => SearchPage());
         }
         return null;
       },

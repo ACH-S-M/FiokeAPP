@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fioke/view/component/bottomNav.dart';
-import 'package:fioke/view/component/topNav.dart';
-import 'package:fioke/view/component/promocard.dart';
+import 'package:fioke/view/component/Struktur/bottomNav.dart';
+import 'package:fioke/view/component/Struktur/topNav.dart';
+import 'package:fioke/view/component/Produk/promocard.dart';
 
 class PromoPage extends StatelessWidget {
   const PromoPage({super.key});

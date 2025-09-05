@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fioke/view/component/bg-carousel.dart';
+import 'package:fioke/view/component/Struktur/bg-carousel.dart';
 class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
   @override

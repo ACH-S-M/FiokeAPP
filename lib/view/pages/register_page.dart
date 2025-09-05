@@ -112,8 +112,8 @@ class _RegisterPage extends State<RegisterPage> {
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 108,
-                            vertical: 16,
+                            horizontal: 113,
+                            vertical: 10,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(

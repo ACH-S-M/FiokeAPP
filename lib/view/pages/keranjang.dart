@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fioke/models/cartitem.dart';
-import 'package:fioke/view/component/rekomendasi.dart';
+import 'package:fioke/view/component/Produk/rekomendasi.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});

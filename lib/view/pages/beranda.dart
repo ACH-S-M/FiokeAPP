@@ -1,9 +1,9 @@
-import 'package:fioke/view/component/bottomNav.dart';
+import 'package:fioke/view/component/Struktur/bottomNav.dart';
 import 'package:flutter/material.dart';
-import 'package:fioke/view/component/cardproduk.dart';
+import 'package:fioke/view/component/Produk/cardproduk.dart';
 import 'package:fioke/viewmodel/ProdukViewModel.dart';
-import 'package:fioke/view/component/carousel.dart';
-import 'package:fioke/view/component/topNav.dart';
+import 'package:fioke/view/component/Struktur/carousel.dart';
+import 'package:fioke/view/component/Struktur/topNav.dart';
 import 'package:fioke/models/Produk.dart';
 
 

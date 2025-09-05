@@ -19,7 +19,7 @@ class Topnav extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsetsGeometry.all(8),
+          padding: EdgeInsetsGeometry.all(12),
           child: Row(
             children: [
               // Search Bar
@@ -37,6 +37,10 @@ class Topnav extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
+                          readOnly: true,
+                          onTap: () {
+                              Navigator.pushNamed(context, '/pencarian');
+                          },
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Teh botol Sosro",
