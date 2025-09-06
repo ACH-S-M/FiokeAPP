@@ -10,6 +10,9 @@ import 'package:fioke/view/pages/promo.dart';
 import 'package:fioke/view/pages/login_page.dart';
 import 'package:fioke/view/pages/register_page.dart';
 import 'package:fioke/view/pages/pencarian.dart';
+import 'package:fioke/viewmodel/search_viewmodel.dart';
+import 'package:provider/provider.dart';
+
 void main(){
   runApp(MyApp());
 }
@@ -20,9 +23,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      initialRoute: '/',
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SearchViewModel()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(useMaterial3: true),
+        initialRoute: '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
@@ -51,9 +58,12 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => PromoPage());
            case '/pencarian' :
             return MaterialPageRoute(builder: (_) => SearchPage());
+
         }
+
         return null;
       },
+      ),
     );
   }
 }

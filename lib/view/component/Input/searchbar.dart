@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fioke/view/pages/hasil_pencarian.dart';
+import 'package:fioke/viewmodel/search_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class SearchbarWidget extends StatefulWidget {
   const SearchbarWidget({super.key});
@@ -7,9 +10,19 @@ class SearchbarWidget extends StatefulWidget {
 }
 
 class _SearchbarWidget extends State<SearchbarWidget> {
+  final TextEditingController _search = TextEditingController();
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Consumer<SearchViewModel>(
+      builder: (context, searchViewModel, child) {
+        return Container(
       width: double.infinity,
       height: 56,
       decoration: BoxDecoration(
@@ -46,15 +59,50 @@ class _SearchbarWidget extends State<SearchbarWidget> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.search, color: Colors.grey),
+                    searchViewModel.isLoading 
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                            ),
+                          )
+                        : const Icon(Icons.search, color: Colors.grey),
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
+                        controller: _search,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Cari produk...",
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
+                        onSubmitted: (value) async {
+                          await searchViewModel.searchProducts(value);
+                          
+                          // Show error message if any
+                          if (searchViewModel.hasError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(searchViewModel.errorMessage),
+                                backgroundColor: searchViewModel.searchResults.isEmpty 
+                                    ? Colors.blue 
+                                    : Colors.red,
+                              ),
+                            );
+                          }
+                          
+                          // Navigate to results if there are results
+                          if (searchViewModel.hasResults) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Hasilpencarian(),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -64,6 +112,8 @@ class _SearchbarWidget extends State<SearchbarWidget> {
           ],
         ),
       ),
+    );
+      },
     );
   }
 }

@@ -92,6 +92,7 @@ class _Loginpage extends State<LoginPage> {
                             if(e.response?.statusCode == 422){
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Format email salaah, kasih @mail.com")));
                             }
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Salahnya di : $e")));
                          }
                         },
                         style: ElevatedButton.styleFrom(
