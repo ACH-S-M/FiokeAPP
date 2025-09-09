@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fioke/models/Produk.dart';
 import 'package:fioke/network/api_services.dart';
@@ -5,6 +6,7 @@ import 'package:dio/dio.dart';
 
 class SearchViewModel extends ChangeNotifier {
   final ApiService _apiService = ApiService();
+  Timer? _debounceTimer;
   
   // State variables
   bool _isLoading = false;
@@ -34,8 +36,16 @@ class SearchViewModel extends ChangeNotifier {
   bool get hasError => _errorMessage.isNotEmpty;
   bool get hasResults => _searchResults.isNotEmpty;
   
-  // Search method
-  Future<void> searchProducts(String query) async {
+  // Search method with debouncing
+  void searchProducts(String query) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      _performSearch(query);
+    });
+  }
+  
+  // Perform actual search
+  Future<void> _performSearch(String query) async {
     if (query.trim().isEmpty) {
       _setError('Masukkan kata kunci pencarian');
       return;
@@ -118,6 +128,7 @@ class SearchViewModel extends ChangeNotifier {
   
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     super.dispose();
   }
 }

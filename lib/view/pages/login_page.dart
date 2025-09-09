@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fioke/view/component/Input/TextfieldComponent.dart';
-import 'package:fioke/network/api_services.dart';
+import 'package:fioke/viewmodel/auth_viewmodel.dart';
+import 'package:provider/provider.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
   @override
@@ -21,7 +21,9 @@ class _Loginpage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<AuthViewModel>(
+      builder: (context, authViewModel, child) {
+        return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
       ),
@@ -73,27 +75,22 @@ class _Loginpage extends State<LoginPage> {
 
                       const SizedBox(height: 48),
                       ElevatedButton(
-                        onPressed: () async {
-                         try{
-                             Response response = await ApiService().postData('api/login', {
-                              "email": _email.text.trim(),
-                              "password" : _password.text.trim()
-                          });
-                            if(response.statusCode == 200) {
-                              Navigator.pushReplacementNamed(context, '/beranda');
-                            }
-                         }on DioException catch(e) {
-                            if(e.response?.statusCode == 401){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Email atau Password salah")));
-                            }
-                             if(e.response?.statusCode == 402){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data gaboleh kosong / data tidak valid")));
-                            } 
-                            if(e.response?.statusCode == 422){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Format email salaah, kasih @mail.com")));
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Salahnya di : $e")));
-                         }
+                        onPressed: authViewModel.isLoading ? null : () async {
+                          bool success = await authViewModel.login(
+                            _email.text, 
+                            _password.text
+                          );
+                          
+                          if (success) {
+                            Navigator.pushReplacementNamed(context, '/beranda');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(authViewModel.errorMessage),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -108,7 +105,16 @@ class _Loginpage extends State<LoginPage> {
                             ), // biar rounded
                           ),
                         ),
-                        child: Text("Login", style: TextStyle(fontSize: 20)),
+                        child: authViewModel.isLoading 
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : Text("Login", style: TextStyle(fontSize: 20)),
                       ),
                       const SizedBox(height: 36,),
                       GestureDetector(
@@ -126,6 +132,8 @@ class _Loginpage extends State<LoginPage> {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }

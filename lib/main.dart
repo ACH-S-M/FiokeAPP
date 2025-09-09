@@ -10,7 +10,10 @@ import 'package:fioke/view/pages/promo.dart';
 import 'package:fioke/view/pages/login_page.dart';
 import 'package:fioke/view/pages/register_page.dart';
 import 'package:fioke/view/pages/pencarian.dart';
+import 'package:fioke/view/pages/profile.dart';
 import 'package:fioke/viewmodel/search_viewmodel.dart';
+import 'package:fioke/viewmodel/auth_viewmodel.dart';
+import 'package:fioke/viewmodel/produk_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 void main(){
@@ -25,7 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => SearchViewModel()),
+        ChangeNotifierProvider(create: (_) => ProdukViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(useMaterial3: true),
@@ -58,6 +63,9 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => PromoPage());
            case '/pencarian' :
             return MaterialPageRoute(builder: (_) => SearchPage());
+          case '/profil' :
+            return MaterialPageRoute(builder: (_) => Profile());
+
 
         }
 

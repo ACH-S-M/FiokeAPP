@@ -78,30 +78,16 @@ class _SearchbarWidget extends State<SearchbarWidget> {
                           hintText: "Cari produk...",
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                        onSubmitted: (value) async {
-                          await searchViewModel.searchProducts(value);
+                        onSubmitted: (value) {
+                          searchViewModel.searchProducts(value);
                           
-                          // Show error message if any
-                          if (searchViewModel.hasError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(searchViewModel.errorMessage),
-                                backgroundColor: searchViewModel.searchResults.isEmpty 
-                                    ? Colors.blue 
-                                    : Colors.red,
-                              ),
-                            );
-                          }
-                          
-                          // Navigate to results if there are results
-                          if (searchViewModel.hasResults) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => Hasilpencarian(),
-                              ),
-                            );
-                          }
+                          // Navigate to results page immediately
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => Hasilpencarian(),
+                            ),
+                          );
                         },
                       ),
                     ),

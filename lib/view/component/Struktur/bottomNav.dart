@@ -48,7 +48,7 @@ class _BottomNavContent extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(assetPath),
+            SvgPicture.asset(assetPath,width: 30,),
             Text(label, style: TextStyle(color: textColor))
           ],
         ),
@@ -98,7 +98,7 @@ class _BottomNavContent extends StatelessWidget {
           active: isProfile,
           onTap: () {
             if (!isProfile) {
-             Navigator.pushReplacementNamed(context, '/beranda');
+             Navigator.pushReplacementNamed(context, '/profil');
             }
           },
         ),

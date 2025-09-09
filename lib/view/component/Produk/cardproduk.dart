@@ -1,6 +1,7 @@
 
 import 'package:fioke/view/pages/detail.dart';
 import 'package:flutter/material.dart';
+import 'package:fioke/utils/image_cache_helper.dart';
 
 class CardProduk extends StatelessWidget {
    final String nama;
@@ -52,59 +53,48 @@ class CardProduk extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                   child: isNetworkImage
-                    ? Image.network(
-                       gambar,
+                    ? ImageCacheHelper.cachedImage(
+                        imageUrl: gambar,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          print('Gagal mengambil gambar : $error');
-                          print('stacknya masuk ke  : $stackTrace');
-                          print(gambar);
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                        placeholder: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                          ),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]!),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.image, size: 40, color: Colors.grey[600]),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Gambar tidak tersedia',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey[600],
-                                  ),
-                                  textAlign: TextAlign.center,
+                          ),
+                        ),
+                        errorWidget: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.image, size: 40, color: Colors.grey[600]),
+                              SizedBox(height: 8),
+                              Text(
+                                'Gambar tidak tersedia',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                            ),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / 
-                                      loadingProgress.expectedTotalBytes!
-                                    : null,
+                                textAlign: TextAlign.center,
                               ),
-                            ),
-                          );
-                        },
+                            ],
+                          ),
+                        ),
                       )
                     : Image.asset(
                         gambar,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           print('Error loading asset image: $error');
-                          // Fallback to default image
                           return Container(
                             decoration: BoxDecoration(
                               color: Colors.grey[300],

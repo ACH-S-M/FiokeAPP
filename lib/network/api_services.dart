@@ -4,7 +4,7 @@ import 'package:fioke/models/Produk.dart';
 class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: "http://10.103.227.168/",
+      baseUrl: "http://10.103.227.202/",
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 6),
       headers: {"Accept": "application/json"},
